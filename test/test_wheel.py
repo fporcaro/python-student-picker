@@ -1,5 +1,5 @@
 import unittest
-from wheel import get_next_index
+from wheel_view_model import get_next_index
 
 
 class WheelTestCase(unittest.TestCase):

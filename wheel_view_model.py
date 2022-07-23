@@ -2,9 +2,11 @@ from typing import List
 
 import terminal
 import logging
+"""
+WheelViewModel Manages the information that will be displayed for the wheel at any point in time
+"""
 
-
-class Wheel:
+class WheelViewModel:
     def __init__(self, line_items: List[str]):
         self.line_items = line_items
         self.current_item_index = 0
@@ -23,7 +25,7 @@ class Wheel:
         """
         if line_index < 0:
             index_function = get_previous_index
-        if line_index > 0:
+        elif line_index > 0:
             index_function = get_next_index
         else:
             index_function = None
@@ -31,7 +33,7 @@ class Wheel:
         item_index = self.current_item_index
         for count in range(abs(line_index)):
             item_index = index_function(line_items=self.line_items, current_index=item_index)
-        return self.line_items[self.current_item_index]
+        return self.line_items[item_index]
 
 
 def get_next_index(line_items, current_index):
@@ -41,6 +43,6 @@ def get_next_index(line_items, current_index):
 def get_previous_index(line_items, current_index):
     previous_index = current_index - 1
     if previous_index < 0:
-        previous_index = len(line_items)
+        previous_index = len(line_items)-1
     return previous_index
 

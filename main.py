@@ -1,16 +1,21 @@
 import terminal
 from time import sleep
-from wheel import print_wheel, get_next_index
+
+from terminal_wheel_view import TerminalWheelView
+from wheel_view_model import WheelViewModel
+
+
+lines = ['One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven']
 
 
 def run():
-    lines = ['One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven']
-    next_first_line = 0
-    for count in range(10):
-        print_wheel(line_items=lines, starting_index=count, lines_to_display=5)
-        next_first_line = get_next_index(line_items=lines, current_index=next_first_line)
-        print('')
-        sleep(3)
+    wheel_view_model = WheelViewModel(line_items=lines)
+    terminal_wheel_view = TerminalWheelView(wheel_view_model=wheel_view_model, starting_index=6)
+    count = 100
+    for item_index in range(count):
+        terminal_wheel_view.print_wheel()
+        wheel_view_model.increment_wheel()
+        sleep(0.05)
 
 
 if __name__ == '__main__':
