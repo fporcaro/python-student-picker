@@ -27,6 +27,10 @@ def set_cursor_position(row, col):
     write(esc('H', [row, col]))
 
 
+def set_horizontal_absolute(col):
+    write(esc('G', [col]))
+
+
 def cursor_previous_line(lines=1):
     write(esc('F', [lines]))
 
