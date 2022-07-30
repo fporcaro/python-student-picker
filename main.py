@@ -4,7 +4,7 @@ from time import sleep
 from basket_item_model import BasketItemModel
 from item_reveal_view import ItemRevealView
 from simple_item_model import SimpleItemModel
-from super_randomizer_manager import SuperRandomizerManager
+from student_picker_manager import StudentPickerManager
 from terminal_wheel_view import TerminalWheelView
 from wheel_view_model import WheelViewModel
 
@@ -32,7 +32,7 @@ def run_randomizer():
     pop_quiz_item = "Pop Quiz"
     list_item_model = SimpleItemModel(main_items=items, pop_quiz_item=pop_quiz_item)
     basket_item_model = BasketItemModel(main_items=items, pop_quiz_item=pop_quiz_item)
-    randomizer = SuperRandomizerManager(list_model=list_item_model, basket_model=basket_item_model, pop_quiz_item=pop_quiz_item)
+    randomizer = StudentPickerManager(list_model=list_item_model, basket_model=basket_item_model, pop_quiz_item=pop_quiz_item)
     randomizer.start()
     randomizer.process_input_loop()
 

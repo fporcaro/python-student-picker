@@ -21,7 +21,7 @@ COMMAND_CHAR_DRAMATIC_MODE = b'd'
 COMMAND_CHAR_SELECT_ITEM = b' '
 
 
-class SuperRandomizerManager:
+class StudentPickerManager:
     def __init__(self, list_model: SimpleItemModel, basket_model: BasketItemModel, pop_quiz_item):
         self.list_model = list_model
         self.basket_model = basket_model
