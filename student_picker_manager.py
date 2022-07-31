@@ -5,6 +5,17 @@ from basket_item_model import BasketItemModel
 from item_reveal_view import ItemRevealView
 from simple_item_model import SimpleItemModel
 import terminal
+import logging
+
+ROW_MODEL_STATUS = 11
+
+ROW_INPUT_KEY = 10
+ROW_ITEM = 6
+ROW_POP_QUIZ = 3
+ROW_MODEL = 2
+ROW_MODE = 1
+
+DEFAULT_MAX_PEEK_ITEMS = 4
 
 MODE_QUICK = 'Quick'
 MODE_DRAMATIC = 'Dramatic'
@@ -19,10 +30,12 @@ COMMAND_CHAR_FEATURE_ITEM = b'f'
 COMMAND_CHAR_QUICK_MODE = b'q'
 COMMAND_CHAR_DRAMATIC_MODE = b'd'
 COMMAND_CHAR_SELECT_ITEM = b' '
+COMMAND_CHAR_SHOW_MODEL = b'm'
+COMMAND_CHAR_UNDO = b'u'
 
 
 class StudentPickerManager:
-    def __init__(self, list_model: SimpleItemModel, basket_model: BasketItemModel, pop_quiz_item):
+    def __init__(self, list_model: SimpleItemModel, basket_model: BasketItemModel, pop_quiz_item, max_peek_items=DEFAULT_MAX_PEEK_ITEMS):
         self.list_model = list_model
         self.basket_model = basket_model
         self.pop_quiz_item = pop_quiz_item
@@ -31,6 +44,8 @@ class StudentPickerManager:
         self.current_model = self.list_model
         self.feature_item = None
         self.item_reveal_view = ItemRevealView()
+        self.max_peek_items = max_peek_items
+        self.show_model = False
 
     def handle_command_character(self, character):
         command_character = character.lower()
@@ -56,6 +71,10 @@ class StudentPickerManager:
             self.write_model()
         elif command_character == COMMAND_CHAR_SELECT_ITEM:
             self.select_and_display_item()
+        elif command_character == COMMAND_CHAR_SHOW_MODEL:
+            self.show_model = not self.show_model
+        elif command_character == COMMAND_CHAR_UNDO:
+            self.current_model.undo()
         # elif command_character == COMMAND_CHAR_FEATURE_ITEM:
         #     feature_item_index = msvcrt.
         else:
@@ -71,40 +90,54 @@ class StudentPickerManager:
         self.write_pop_quiz()
 
     def write_mode(self):
-        terminal.set_cursor_position(1, 1)
+        terminal.set_cursor_position(ROW_MODE, 1)
         terminal.erase_to_end_of_line()
         terminal.write(f"Mode: {self.mode}")
 
     def write_model(self):
-        terminal.set_cursor_position(2, 1)
+        terminal.set_cursor_position(ROW_MODEL, 1)
         terminal.erase_to_end_of_line()
         terminal.write(f"Model: {self.current_model_type}")
 
     def write_pop_quiz(self):
-        terminal.set_cursor_position(3, 1)
+        terminal.set_cursor_position(ROW_POP_QUIZ, 1)
         terminal.erase_to_end_of_line()
         terminal.write(f"Pop Quiz Enabled: {self.list_model.pop_quiz_item_enabled}")
 
     def select_and_display_item(self):
-        terminal.set_cursor_position(6, 1)
+        terminal.set_cursor_position(ROW_ITEM, 1)
         selected_item = self.current_model.select_item()
-        if self.mode == MODE_DRAMATIC:
-            peek_item_count = random.uniform(2, 4)
-            peek_items = self.current_model.peek_random_items(quantity=2)
-            self.item_reveal_view.reveal_value_dramatic(selected_item, peek_values=peek_items)
-        elif self.mode == MODE_QUICK:
+        if len(self.current_model.current_items) == 0 or self.mode == MODE_QUICK:
             self.item_reveal_view.reveal_value(value=selected_item)
+        elif self.mode == MODE_DRAMATIC:
+            peek_item_count = int(random.uniform(1, self.max_peek_items))
+            peek_items = self.current_model.peek_random_items(quantity=peek_item_count)
+            self.item_reveal_view.reveal_value_dramatic(selected_item, peek_values=peek_items)
+        else:
+            logging.error(f"Unexpected select and display: {self.current_model}")
+            exit(2)
 
     def write_key(self, key):
-        terminal.set_cursor_position(10, 1)
+        terminal.set_cursor_position(ROW_INPUT_KEY, 1)
         terminal.erase_to_end_of_line()
         terminal.write(f"Received key: {key}")
+
+    def write_model_status(self):
+        terminal.set_cursor_position(ROW_MODEL_STATUS, 1)
+        terminal.erase_to_end_of_line()
+        if self.show_model:
+            terminal.write(f"Basket Model: {self.basket_model.current_items}")
+        terminal.set_cursor_position(ROW_MODEL_STATUS + 1, 1)
+        terminal.erase_to_end_of_line()
+        if self.show_model:
+            terminal.write(f"Basket Model Selected: {self.basket_model.previously_selected_items}")
 
     def process_input_loop(self):
         key = msvcrt.getch()
         self.write_key(key)
         while key != COMMAND_CHAR_EXIT:
             self.handle_command_character(character=key)
+            self.write_model_status()
             key = msvcrt.getch()
             self.write_key(key)
 

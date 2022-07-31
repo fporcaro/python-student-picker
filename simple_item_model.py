@@ -3,7 +3,7 @@ import random
 
 class SimpleItemModel:
     def __init__(self, main_items, pop_quiz_item):
-        self.main_items = main_items
+        self.main_items = main_items.copy()
         self.featured_item = None
         self.pop_quiz_item = pop_quiz_item
         self.pop_quiz_item_enabled = False
@@ -20,7 +20,7 @@ class SimpleItemModel:
         return selected_item
 
     def selected_item(self, item):
-        x = 1
+        pass
 
     def toggle_pop_quiz_item_enabled(self):
         self.set_pop_quiz_item_enabled(not self.pop_quiz_item_enabled)
@@ -31,13 +31,25 @@ class SimpleItemModel:
         self.build_current_items()
 
     def peek_random_items(self, quantity=1):
-        return random.choices(self.current_items, k=min([quantity, len(self.current_items)]))
+        random_item_quantity = min([quantity, len(self.current_items)])
+        if random_item_quantity == 0:
+            return []
+        return random.choices(self.current_items, k=random_item_quantity)
 
     def build_current_items(self):
         """
         Build the full set of available items including any available main items and the pop quiz item if enabled.
         :return:
         """
-        self.current_items = self.main_items
+        self.current_items = self.main_items.copy()
         if self.pop_quiz_item_enabled:
             self.current_items.append(self.pop_quiz_item)
+
+    def undo(self):
+        """
+        Undo the last selection.  If the model changes when selecting an item, make the last
+        selection like it didn't happen
+        :return:
+        """
+        # The simple model doesn't modify it's items, so do nothing
+        pass

@@ -56,9 +56,9 @@ def erase_in_display(function=0):
 
 
 def erase_screen():
-    erase_in_display(function=2
+    erase_in_display(function=2)
 
-                     )
+
 def cursor_position_absolute(pos):
     write(esc('G', [pos]))
 
