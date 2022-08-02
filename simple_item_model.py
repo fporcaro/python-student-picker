@@ -2,11 +2,11 @@ import random
 
 
 class SimpleItemModel:
-    def __init__(self, main_items, pop_quiz_item):
+    def __init__(self, main_items, pop_quiz_item, pop_quiz_item_enabled=False, featured_item=None):
         self.main_items = main_items.copy()
-        self.featured_item = None
+        self.featured_item = featured_item
         self.pop_quiz_item = pop_quiz_item
-        self.pop_quiz_item_enabled = False
+        self.pop_quiz_item_enabled = pop_quiz_item_enabled
         self.current_items = []
         self.build_current_items()
 

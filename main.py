@@ -1,11 +1,13 @@
 import os
-from time import sleep
+import logging
 
 from basket_item_model import BasketItemModel
 from item_reveal_view import ItemRevealView
 from simple_item_model import SimpleItemModel
-from student_picker_manager import StudentPickerManager
-from wheel_view_model import WheelViewModel
+from student_item_model_google_sheet_broker import StudentPickerManagerGoogleSheetBroker
+from student_picker_manager import StudentPickerManager, MODE_QUICK, MODE_DRAMATIC
+from services.google_sheets_poc import print_data
+from student_picker_sheet import StudentPickerSheet
 from dotenv import load_dotenv
 
 load_dotenv(".env")
@@ -28,6 +30,19 @@ def run_student_picker():
     student_picker.process_input_loop()
 
 
+def run_google_sheet_poc():
+    print_data()
+
+
+def use_student_picker_sheet():
+    sheet_id = os.environ["GOOGLE_SHEET_SPREADSHEET_ID"]
+    student_picker_sheet = StudentPickerSheet(sheet_id=sheet_id)
+    broker = StudentPickerManagerGoogleSheetBroker(student_picker_sheet=student_picker_sheet)
+    student_picker_manager = broker.create_manager_from_sheet()
+    student_picker_manager.start()
+    student_picker_manager.process_input_loop()
+
+
 if __name__ == '__main__':
-    run_student_picker()
+    use_student_picker_sheet()
 

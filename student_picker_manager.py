@@ -35,13 +35,11 @@ COMMAND_CHAR_UNDO = b'u'
 
 
 class StudentPickerManager:
-    def __init__(self, list_model: SimpleItemModel, basket_model: BasketItemModel, pop_quiz_item, max_peek_items=DEFAULT_MAX_PEEK_ITEMS):
+    def __init__(self, list_model: SimpleItemModel, basket_model: BasketItemModel, mode=MODE_DRAMATIC, current_model_type=MODEL_LIST, max_peek_items=DEFAULT_MAX_PEEK_ITEMS):
         self.list_model = list_model
         self.basket_model = basket_model
-        self.pop_quiz_item = pop_quiz_item
-        self.mode = MODE_DRAMATIC
-        self.current_model_type = MODEL_LIST
-        self.current_model = self.list_model
+        self.mode = mode
+        self.set_current_model_type(current_model_type)
         self.feature_item = None
         self.item_reveal_view = ItemRevealView()
         self.max_peek_items = max_peek_items
@@ -62,12 +60,10 @@ class StudentPickerManager:
             self.mode = MODE_QUICK
             self.write_mode()
         elif command_character == COMMAND_CHAR_LIST_MODE:
-            self.current_model_type = MODEL_LIST
-            self.current_model = self.list_model
+            self.set_current_model_type(MODEL_LIST)
             self.write_model()
         elif command_character == COMMAND_CHAR_BASKET_MODE:
-            self.current_model_type = MODEL_BASKET
-            self.current_model = self.basket_model
+            self.set_current_model_type(MODEL_BASKET)
             self.write_model()
         elif command_character == COMMAND_CHAR_SELECT_ITEM:
             self.select_and_display_item()
@@ -80,6 +76,12 @@ class StudentPickerManager:
         else:
             self.write_key(key=f"Unknown command {command_character}")
 
+    def set_current_model_type(self, model_type):
+        self.current_model_type = model_type
+        if model_type == MODEL_LIST:
+            self.current_model = self.list_model
+        elif model_type == MODEL_BASKET:
+            self.current_model = self.basket_model
     def exit(self):
         exit(0)
 
