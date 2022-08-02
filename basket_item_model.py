@@ -2,7 +2,7 @@ from simple_item_model import SimpleItemModel
 
 
 class BasketItemModel(SimpleItemModel):
-    def __init__(self, main_items, pop_quiz_item, pop_quiz_item_enabled, featured_item, previously_selected_items=None):
+    def __init__(self, main_items, pop_quiz_item, pop_quiz_item_enabled=False, featured_item=None, previously_selected_items=None):
         super().__init__(main_items=main_items, pop_quiz_item=pop_quiz_item,
                          pop_quiz_item_enabled=pop_quiz_item_enabled, featured_item=featured_item)
         self.original_main_items = main_items.copy()

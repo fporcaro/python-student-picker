@@ -6,7 +6,6 @@ from item_reveal_view import ItemRevealView
 from simple_item_model import SimpleItemModel
 from student_item_model_google_sheet_broker import StudentPickerManagerGoogleSheetBroker
 from student_picker_manager import StudentPickerManager, MODE_QUICK, MODE_DRAMATIC
-from services.google_sheets_poc import print_data
 from student_picker_sheet import StudentPickerSheet
 from dotenv import load_dotenv
 
@@ -25,13 +24,9 @@ def run_student_picker():
     pop_quiz_item = "Pop Quiz"
     list_item_model = SimpleItemModel(main_items=items, pop_quiz_item=pop_quiz_item)
     basket_item_model = BasketItemModel(main_items=items, pop_quiz_item=pop_quiz_item)
-    student_picker = StudentPickerManager(list_model=list_item_model, basket_model=basket_item_model, pop_quiz_item=pop_quiz_item)
+    student_picker = StudentPickerManager(list_model=list_item_model, basket_model=basket_item_model)
     student_picker.start()
     student_picker.process_input_loop()
-
-
-def run_google_sheet_poc():
-    print_data()
 
 
 def use_student_picker_sheet():
