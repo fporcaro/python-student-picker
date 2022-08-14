@@ -1,5 +1,5 @@
 import unittest
-from simple_item_model import SimpleItemModel
+from src.model.simple_item_model import SimpleItemModel
 
 class TestSimpleItemModel(unittest.TestCase):
     def test_standard_select_item(self):

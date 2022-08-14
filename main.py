@@ -1,12 +1,11 @@
 import os
-import logging
 
-from basket_item_model import BasketItemModel
-from item_reveal_view import ItemRevealView
-from simple_item_model import SimpleItemModel
-from student_item_model_google_sheet_broker import StudentPickerManagerGoogleSheetBroker
-from student_picker_manager import StudentPickerManager, MODE_QUICK, MODE_DRAMATIC
-from student_picker_sheet import StudentPickerSheet
+from src.model.basket_item_model import BasketItemModel
+from src.view.item_reveal_view import ItemRevealView
+from src.model.simple_item_model import SimpleItemModel
+from src.persistence.student_item_model_google_sheet_broker import StudentPickerManagerGoogleSheetBroker
+from src.model.student_picker_manager import StudentPickerManager
+from src.persistence.student_picker_sheet import StudentPickerSheet
 from dotenv import load_dotenv
 
 load_dotenv(".env")
@@ -38,6 +37,7 @@ def use_student_picker_sheet():
     student_picker_manager.process_input_loop()
 
 
+print('main.py module name is %s' % __name__)
 if __name__ == '__main__':
     use_student_picker_sheet()
 

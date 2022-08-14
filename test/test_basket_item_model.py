@@ -1,5 +1,5 @@
 import unittest
-from basket_item_model import BasketItemModel
+from src.model.basket_item_model import BasketItemModel
 
 
 class BasketItemModelTestCase(unittest.TestCase):

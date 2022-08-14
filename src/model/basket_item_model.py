@@ -1,4 +1,4 @@
-from simple_item_model import SimpleItemModel
+from src.model.simple_item_model import SimpleItemModel
 
 
 class BasketItemModel(SimpleItemModel):

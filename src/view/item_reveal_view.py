@@ -1,7 +1,7 @@
 import random
 
-import terminal
-from terminal import erase_entire_line, write, set_horizontal_absolute
+from src.services.terminal import terminal
+from src.services.terminal.terminal import write, set_horizontal_absolute
 from time import sleep
 
 

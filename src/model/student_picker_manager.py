@@ -1,10 +1,10 @@
 import msvcrt
 import random
 
-from basket_item_model import BasketItemModel
-from item_reveal_view import ItemRevealView
-from simple_item_model import SimpleItemModel
-import terminal
+from src.model.basket_item_model import BasketItemModel
+from src.view.item_reveal_view import ItemRevealView
+from src.model.simple_item_model import SimpleItemModel
+from src.services.terminal import terminal
 import logging
 
 ROW_MODEL_STATUS = 11

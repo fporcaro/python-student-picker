@@ -1,8 +1,7 @@
-from student_picker_sheet import StudentPickerSheet, ITEM_COLUMN_ENABLED, ITEM_COLUMN_NAME, ITEM_COLUMN_PREVIOUSLY_SELECTED
-from student_picker_manager import MODEL_LIST, MODEL_BASKET
-from simple_item_model import SimpleItemModel
-from basket_item_model import BasketItemModel
-from student_picker_manager import StudentPickerManager
+from src.persistence.student_picker_sheet import StudentPickerSheet, ITEM_COLUMN_ENABLED, ITEM_COLUMN_NAME, ITEM_COLUMN_PREVIOUSLY_SELECTED
+from src.model.simple_item_model import SimpleItemModel
+from src.model.basket_item_model import BasketItemModel
+from src.model.student_picker_manager import StudentPickerManager
 
 
 class StudentPickerManagerGoogleSheetBroker:
@@ -50,3 +49,6 @@ class StudentPickerManagerGoogleSheetBroker:
         return BasketItemModel(main_items=main_items, pop_quiz_item=pop_quiz_value,
                                pop_quiz_item_enabled=pop_quiz_enabled, featured_item=None,
                                previously_selected_items=previously_selected_items)
+
+    def save_student_item_model(self, student_item_model):
+        pass

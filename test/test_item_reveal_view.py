@@ -1,5 +1,5 @@
 import unittest
-from item_reveal_view import ItemRevealView
+from src.view.item_reveal_view import ItemRevealView
 
 
 class MyTestCase(unittest.TestCase):

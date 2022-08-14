@@ -1,4 +1,4 @@
-from services.google.google_sheet import GoogleSheet
+from src.services.google.google_sheet import GoogleSheet
 
 READ_WRITE_SCOPES = ["https://www.googleapis.com/auth/spreadsheets"]
 
@@ -20,8 +20,8 @@ SELECTION_HISTORY_COLUMN_HEADERS = ['date_time', 'model', 'current_items_after',
 
 class StudentPickerSheet:
     def __init__(self, sheet_id):
-        self.sheet = GoogleSheet(sheet_id=sheet_id, scopes=READ_WRITE_SCOPES, credentials_filename='credentials.json',
-                                 token_filename='token.json')
+        self.sheet = GoogleSheet(sheet_id=sheet_id, scopes=READ_WRITE_SCOPES, credentials_filename='./credentials.json',
+                                 token_filename='./token.json')
         self.sheet.get_and_save_credentials()
         self.sheet.connect_service()
 

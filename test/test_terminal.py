@@ -1,6 +1,5 @@
 import unittest
-import terminal
-
+from src.services.terminal import terminal
 
 
 class TerminalTestCase(unittest.TestCase):
