@@ -1,3 +1,6 @@
+from src.model.basket_item_model import BasketItemModel
+from src.model.student_picker_manager import StudentPickerManager
+from src.persistence.item_factory import ItemFactory
 from src.services.google.google_sheet import GoogleSheet
 
 READ_WRITE_SCOPES = ["https://www.googleapis.com/auth/spreadsheets"]
@@ -14,7 +17,8 @@ ITEM_COLUMN_NUMBER = 'number'
 ITEM_COLUMN_NAME = 'name'
 ITEM_COLUMN_PREVIOUSLY_SELECTED = 'previously_selected'
 ITEM_COLUMN_ENABLED = 'enabled'
-ITEM_COLUMN_HEADERS = [ITEM_COLUMN_NUMBER, ITEM_COLUMN_NAME, ITEM_COLUMN_PREVIOUSLY_SELECTED, ITEM_COLUMN_ENABLED]
+ITEM_COLUMN_FEATURED = 'featured'
+ITEM_COLUMN_HEADERS = [ITEM_COLUMN_NUMBER, ITEM_COLUMN_NAME, ITEM_COLUMN_PREVIOUSLY_SELECTED, ITEM_COLUMN_ENABLED, ITEM_COLUMN_FEATURED]
 SELECTION_HISTORY_COLUMN_HEADERS = ['date_time', 'model', 'current_items_after', 'previous_selections_after']
 
 
@@ -32,12 +36,21 @@ class StudentPickerSheet:
         return self.sheet.read_single_cell(RANGE_MODEL)
 
     def read_pop_quiz_item(self):
-        # A range returns multiple rows/objects
-        range_result = self.sheet.read_objects_from_range(RANGE_POP_QUIZ_ITEM, column_headers=ITEM_COLUMN_HEADERS)
-        return range_result[0]
+        items = self.read_student_items()
+        for item in items:
+            if item.number == "P":
+                return item
+        return None
 
     def read_student_items(self):
-        return self.sheet.read_objects_from_range(RANGE_STUDENT_ITEMS, column_headers=ITEM_COLUMN_HEADERS)
+        item_dicts = self.sheet.read_objects_from_range(RANGE_STUDENT_ITEMS, column_headers=ITEM_COLUMN_HEADERS)
+        return self.convert_to_item_models(item_dicts=item_dicts)
+
+    def convert_to_item_models(self, item_dicts):
+        items = []
+        for item_dict in item_dicts:
+            items.append(ItemFactory.create_item_model(item_dict))
+        return items
 
     def write_mode(self, mode):
         return self.sheet.write_single_cell(RANGE_MODE, mode)
@@ -45,3 +58,6 @@ class StudentPickerSheet:
     def write_model(self, model_name):
         return self.sheet.write_single_cell(RANGE_MODEL, model_name)
 
+    def write_student_items(self, student_items):
+        items_to_save = student_items.sort()
+        return self.sheet.write_range(RANGE_STUDENT_ITEMS, items_to_save, column_headers=ITEM_COLUMN_HEADERS)

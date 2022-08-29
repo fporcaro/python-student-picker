@@ -2,6 +2,7 @@ import msvcrt
 import random
 
 from src.model.basket_item_model import BasketItemModel
+from src.model.student_picker_manager_event_handler import StudentPickerManagerEventHandler
 from src.view.item_reveal_view import ItemRevealView
 from src.model.simple_item_model import SimpleItemModel
 from src.services.terminal import terminal
@@ -32,18 +33,23 @@ COMMAND_CHAR_DRAMATIC_MODE = b'd'
 COMMAND_CHAR_SELECT_ITEM = b' '
 COMMAND_CHAR_SHOW_MODEL = b'm'
 COMMAND_CHAR_UNDO = b'u'
+COMMAND_CHAR_RELOAD = b'r'
 
 
 class StudentPickerManager:
-    def __init__(self, list_model: SimpleItemModel, basket_model: BasketItemModel, mode=MODE_DRAMATIC, current_model_type=MODEL_LIST, max_peek_items=DEFAULT_MAX_PEEK_ITEMS):
+    def __init__(self, master_items, list_model: SimpleItemModel, basket_model: BasketItemModel, mode=MODE_DRAMATIC,
+                 current_model_type=MODEL_LIST, max_peek_items=DEFAULT_MAX_PEEK_ITEMS, featured_item=None,
+                 event_handler: StudentPickerManagerEventHandler=None):
+        self.master_items = master_items # The list of items loaded from the source.  State of previous selection and featured status only valid upon loading
         self.list_model = list_model
         self.basket_model = basket_model
         self.mode = mode
         self.set_current_model_type(current_model_type)
-        self.feature_item = None
+        self.featured_item = featured_item
         self.item_reveal_view = ItemRevealView()
         self.max_peek_items = max_peek_items
         self.show_model = False
+        self.event_handler = event_handler
 
     def handle_command_character(self, character):
         command_character = character.lower()
@@ -118,6 +124,8 @@ class StudentPickerManager:
         else:
             logging.error(f"Unexpected select and display: {self.current_model}")
             exit(2)
+        if self.event_handler is not None:
+            self.event_handler.handle_selected_item(selected_item, self)
 
     def write_key(self, key):
         terminal.set_cursor_position(ROW_INPUT_KEY, 1)
