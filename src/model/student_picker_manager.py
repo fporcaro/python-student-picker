@@ -58,19 +58,19 @@ class StudentPickerManager:
         elif command_character == COMMAND_CHAR_POP_QUIZ_TOGGLE:
             self.list_model.toggle_pop_quiz_item_enabled()
             self.basket_model.toggle_pop_quiz_item_enabled()
-            self.write_pop_quiz()
+            self.display_pop_quiz()
         elif command_character == COMMAND_CHAR_DRAMATIC_MODE:
             self.mode = MODE_DRAMATIC
-            self.write_mode()
+            self.display_mode()
         elif command_character == COMMAND_CHAR_QUICK_MODE:
             self.mode = MODE_QUICK
-            self.write_mode()
+            self.display_mode()
         elif command_character == COMMAND_CHAR_LIST_MODE:
             self.set_current_model_type(MODEL_LIST)
-            self.write_model()
+            self.display_model()
         elif command_character == COMMAND_CHAR_BASKET_MODE:
             self.set_current_model_type(MODEL_BASKET)
-            self.write_model()
+            self.display_model()
         elif command_character == COMMAND_CHAR_SELECT_ITEM:
             self.select_and_display_item()
         elif command_character == COMMAND_CHAR_SHOW_MODEL:
@@ -80,7 +80,7 @@ class StudentPickerManager:
         # elif command_character == COMMAND_CHAR_FEATURE_ITEM:
         #     feature_item_index = msvcrt.
         else:
-            self.write_key(key=f"Unknown command {command_character}")
+            self.display_key(key=f"Unknown command {command_character}")
 
     def set_current_model_type(self, model_type):
         self.current_model_type = model_type
@@ -93,21 +93,21 @@ class StudentPickerManager:
 
     def start(self):
         terminal.erase_in_display(function=2)
-        self.write_mode()
-        self.write_model()
-        self.write_pop_quiz()
+        self.display_mode()
+        self.display_model()
+        self.display_pop_quiz()
 
-    def write_mode(self):
+    def display_mode(self):
         terminal.set_cursor_position(ROW_MODE, 1)
         terminal.erase_to_end_of_line()
         terminal.write(f"Mode: {self.mode}")
 
-    def write_model(self):
+    def display_model(self):
         terminal.set_cursor_position(ROW_MODEL, 1)
         terminal.erase_to_end_of_line()
         terminal.write(f"Model: {self.current_model_type}")
 
-    def write_pop_quiz(self):
+    def display_pop_quiz(self):
         terminal.set_cursor_position(ROW_POP_QUIZ, 1)
         terminal.erase_to_end_of_line()
         terminal.write(f"Pop Quiz Enabled: {self.list_model.pop_quiz_item_enabled}")
@@ -125,14 +125,14 @@ class StudentPickerManager:
             logging.error(f"Unexpected select and display: {self.current_model}")
             exit(2)
         if self.event_handler is not None:
-            self.event_handler.handle_selected_item(selected_item, self)
+            self.event_handler.handle_item_selected(selected_item, self)
 
-    def write_key(self, key):
+    def display_key(self, key):
         terminal.set_cursor_position(ROW_INPUT_KEY, 1)
         terminal.erase_to_end_of_line()
         terminal.write(f"Received key: {key}")
 
-    def write_model_status(self):
+    def display_model_status(self):
         terminal.set_cursor_position(ROW_MODEL_STATUS, 1)
         terminal.erase_to_end_of_line()
         if self.show_model:
@@ -144,10 +144,10 @@ class StudentPickerManager:
 
     def process_input_loop(self):
         key = msvcrt.getch()
-        self.write_key(key)
+        self.display_key(key)
         while key != COMMAND_CHAR_EXIT:
             self.handle_command_character(character=key)
-            self.write_model_status()
+            self.display_model_status()
             key = msvcrt.getch()
-            self.write_key(key)
+            self.display_key(key)
 
