@@ -3,6 +3,7 @@ import random
 
 class SimpleItemModel:
     def __init__(self, main_items, pop_quiz_item, pop_quiz_item_enabled=False, featured_item=None):
+        # main_items contains the originally supplied set of items vs. (potentially in subclasses) the current available set of items
         self.main_items = main_items.copy()
         self.featured_item = featured_item
         self.pop_quiz_item = pop_quiz_item
