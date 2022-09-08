@@ -41,6 +41,7 @@ class StudentPickerManagerGoogleSheetBroker(StudentPickerManagerEventHandler):
                 main_items.append(current_item)
                 if student_item.previously_selected:
                     previously_selected_items.append(current_item)
+
         pop_quiz_value = pop_quiz_item.name
         pop_quiz_enabled = pop_quiz_item.enabled
         return BasketItemModel(main_items=main_items, pop_quiz_item=pop_quiz_value,

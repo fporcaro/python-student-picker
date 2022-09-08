@@ -10,6 +10,8 @@ class BasketItemModel(SimpleItemModel):
             self.previously_selected_items = []
         else:
             self.previously_selected_items = previously_selected_items
+            for item in previously_selected_items:
+                self.current_items.remove(item)
 
     def selected_item(self, item):
         """Remove the selected item from the basket"""
