@@ -8,3 +8,9 @@ A terminal-based application for "randomly" selecting a student.  Other features
 
 # Help
 - Delete token.json if your token expires
+
+# Initial Setup
+- Need to get credentials.json (containing client id and client secret) from google apis following the documentation here: https://developers.google.com/sheets/api/quickstart/python
+and here: https://console.cloud.google.com/apis/credentials
+
+Essentially the credentials.json gets downloaded from the google api page where you can see the client id and client secret.
