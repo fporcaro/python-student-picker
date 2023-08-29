@@ -91,6 +91,9 @@ class GoogleSheet:
     def write_single_cell(self, cell_address, cell_value):
         return self.update_range(range_name=cell_address, values=self.create_range_values_from_single_cell(cell_value=cell_value))
 
+    def write_range(self, range, objects_to_write, column_headers):
+        return self.update_range(range_name=range, values=self.create_range_values_from_objects(objects=objects_to_write, column_headers=column_headers))
+
     def create_range_values_from_objects(self, objects, column_headers):
         rows = []
         for object in objects:

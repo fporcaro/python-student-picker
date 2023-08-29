@@ -3,10 +3,12 @@ import random
 
 class SimpleItemModel:
     def __init__(self, main_items, pop_quiz_item, pop_quiz_item_enabled=False, featured_item=None):
+        # main_items contains the originally supplied set of items vs. (potentially in subclasses) the current available set of items
         self.main_items = main_items.copy()
         self.featured_item = featured_item
         self.pop_quiz_item = pop_quiz_item
         self.pop_quiz_item_enabled = pop_quiz_item_enabled
+        # Current items represent the set of available items from which things are selected.  This includes the pop quiz item
         self.current_items = []
         self.build_current_items()
 
@@ -35,6 +37,9 @@ class SimpleItemModel:
         if random_item_quantity == 0:
             return []
         return random.choices(self.current_items, k=random_item_quantity)
+
+    def get_items_remaining_count(self):
+        return len(self.current_items)
 
     def build_current_items(self):
         """
